@@ -36,7 +36,7 @@ typedef enum
 	IntCtrl_SVCALL=11,
 	IntCtrl_DEBUG_MONITOR,
 	IntCtrl_PENDSV=14,
-	IntCtrl_SYSTIC,
+	IntCtrl_SYSTICK,
 	IntCtrl_GPIO_A,
 	IntCtrl_GPIO_B,
 	IntCtrl_GPIO_C,

@@ -74,24 +74,24 @@ void IntCtrl_Init(void)
 	#endif
 	
 	/*Configure Grouping\SubGrouping System in APINT register in SCB*/
-    APINT->B.VECTKEY =0xFA05;
+    APINT = 0x05FA0000;
 	switch(numOfGpPri)
 	{
 		case 1:
-			APINT->B.PRIGROUP = 0x7;
+			APINT |= (0x7 << 8);
 			break;
 		case 2:
-			APINT->B.PRIGROUP = 0x6;
+			APINT |= (0x6 << 8);
 			break;
 		case 4:
-			APINT->B.PRIGROUP = 0x5;
+			APINT |= (0x5 << 8);
 			break;
 		case 8:
-			APINT->B.PRIGROUP = 0x0;
+			APINT |= (0x0 << 8);
 			break;
-		/*if the user entered invalid number then the default will be 8 GP and 1 SubGP*/
+		/*if the user entered invalid number then the default will be 8 GP and 0 SubGP*/
 		default:
-			APINT->B.PRIGROUP = 0x0;
+			APINT |= (0x0 << 8);
 			break;
 	}
 	
@@ -150,23 +150,36 @@ void IntCtrl_Init(void)
 		
 		if(IntName < 16)
 		{
-			/*Set Priority for Exceptions and Faults*/
-			/*Enable System Exceptions and Faults*/
+			/*Set Priority for Exceptions and Faults and then Enable it*/
 			switch(IntName)
 			{
 				case IntCtrl_USAGE_FAULT:
+					SYSPRI1 |= (PriValue << 16); 
 					SETBIT(SYSHNDCTRL,18);
 					break;
 				case IntCtrl_BUS_FAULT:
+					SYSPRI1 |= (PriValue << 8); 
 					SETBIT(SYSHNDCTRL,17);
 					break;
 				case IntCtrl_MEM_MANAGE:
+					SYSPRI1 |= PriValue; 
 					SETBIT(SYSHNDCTRL,16);
+					break;
+				case IntCtrl_SVCALL:
+					SYSPRI2 |= (PriValue << 24);
+					break;
+				case IntCtrl_SYSTICK:
+					SYSPRI3 |= (PriValue << 24);
+					break;
+				case IntCtrl_PENDSV:
+					SYSPRI3 |= (PriValue << 16);
+					break;
+				case IntCtrl_DEBUG_MONITOR:
+					SYSPRI3 |= PriValue;
 					break;
 				default:
 					break;
 			}
-			
 		}
 		
 		else
@@ -360,9 +373,6 @@ void IntCtrl_Init(void)
 		
 		
 	}
-
-	
-
 }
 
 /**********************************************************************************************************************

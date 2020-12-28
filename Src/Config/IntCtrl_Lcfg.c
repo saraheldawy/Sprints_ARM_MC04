@@ -30,7 +30,7 @@
 {
 	{IntCtrl_GPIO_A,		3, 		0},
 	{IntCtrl_GPIO_F,		2,		1},
-	{IntCtrl_TIMER0_A, 		3,		1}
+	{IntCtrl_SYSTICK, 		3,		1}
 };
 
 
