@@ -1,27 +1,33 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  IntCtrl.h
- *       Module:  IntCtrl
+ *         File:  Compiler.h
+ *       Module:  -
  *
- *  Description:  header file for IntCtrl Module    
+ *  Description:  Contains Compiler Dependent MACRO Definition     
  *  
  *********************************************************************************************************************/
-#ifndef IntCtrl_H
-#define IntCtrl_H
+#ifndef COMPILER_H
+#define COMPILER_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
-#include "IntCtrl_Types.h"
-#include "IntCtrl_LCfg.h"
-#include "IntCtrl_Cfg.h"
+
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
+/* NULL_PTR define with a void pointer to zero definition*/
+#define NULL_PTR       ((void *)0)
 
+/* INLINE  define for abstraction of the keyword inline*/
+#define INLINE         inline
+
+/* LOCAL_INLINE define for abstraction of the keyword inline in functions with "static" scope.
+   Different compilers may require a different sequence of the keywords "static" and "inline" 
+   if this is supported at all. */
+#define LOCAL_INLINE   static inline
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
@@ -41,22 +47,10 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
+
  
-/******************************************************************************
-* \Syntax          : void IntCrtl_Init(void)                                      
-* \Description     : initialize Nvic\SCB Module by parsing the Configuration 
-*                    into Nvic\SCB registers                                    
-*                                                                             
-* \Sync\Async      : Synchronous                                               
-* \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : None                     
-* \Parameters (out): None                                                      
-* \Return value:   : None
-*******************************************************************************/
-void IntCtrl_Init(void);
- 
-#endif  /* IntCrtl_H */
+#endif  /* COMPILER_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: IntCtrl.h
+ *  END OF FILE: Std_Types.h
  *********************************************************************************************************************/

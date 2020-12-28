@@ -1,27 +1,44 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  IntCtrl.h
- *       Module:  IntCtrl
+ *         File:  Platform_Types.h
+ *       Module:  -
  *
- *  Description:  header file for IntCtrl Module    
+ *  Description:  Contains types that dependent on platform - CortexM4     
  *  
  *********************************************************************************************************************/
-#ifndef IntCtrl_H
-#define IntCtrl_H
+#ifndef PLATFORM_TYPES_H
+#define PLATFORM_TYPES_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
-#include "IntCtrl_Types.h"
-#include "IntCtrl_LCfg.h"
-#include "IntCtrl_Cfg.h"
+
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
+#define WORD_LENGTH_BITS      32u
+#define WORD_LENGTH_BYTES     4u
+#define MSB_FIRST             0u    /* big endian bit ordering */
+#define LSB_FIRST        1u    /* little endian bit ordering */
 
+#define HIGH_BYTE_FIRST  0u    /* big endian byte ordering */
+#define LOW_BYTE_FIRST   1u    /* little endian byte ordering */
+
+#ifndef TRUE
+   #define TRUE   1u
+#endif
+
+#ifndef FALSE
+   #define FALSE  0u
+#endif
+
+#define ENABLE    1u
+#define DISABLE   0u
+
+#define CPU_BIT_ORDER    LSB_FIRST        /*little endian bit ordering*/
+#define CPU_BYTE_ORDER   LOW_BYTE_FIRST   /*little endian byte ordering*/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
@@ -31,7 +48,22 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
+typedef unsigned char         boolean;       /*        TRUE .. FALSE           */
 
+typedef signed char           sint8;         /*        -128 .. +127            */
+typedef unsigned char         uint8;         /*           0 .. 255             */
+typedef signed short          sint16;        /*      -32768 .. +32767          */
+typedef unsigned short        uint16;        /*           0 .. 65535           */
+typedef signed long           sint32;        /* -2147483648 .. +2147483647     */
+typedef unsigned long         uint32;        /*           0 .. 4294967295      */
+
+typedef float                 float32;
+typedef double                float64;
+
+#ifdef PLATFORM_SUPPORT_SINT64_UINT64 /*Valid only for gnu and C99 */
+typedef signed    long long  sint64;   /* -9223372036854775808 .. 9223372036854775807      */
+typedef unsigned  long long  uint64;   /*                    0 .. 18446744073709551615     */
+#endif
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
@@ -41,22 +73,10 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
+
  
-/******************************************************************************
-* \Syntax          : void IntCrtl_Init(void)                                      
-* \Description     : initialize Nvic\SCB Module by parsing the Configuration 
-*                    into Nvic\SCB registers                                    
-*                                                                             
-* \Sync\Async      : Synchronous                                               
-* \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : None                     
-* \Parameters (out): None                                                      
-* \Return value:   : None
-*******************************************************************************/
-void IntCtrl_Init(void);
- 
-#endif  /* IntCrtl_H */
+#endif  /* PLATFORM_TYPES_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: IntCtrl.h
+ *  END OF FILE: Std_Types.h
  *********************************************************************************************************************/

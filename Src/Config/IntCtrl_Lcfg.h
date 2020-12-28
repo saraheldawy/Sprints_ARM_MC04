@@ -1,27 +1,25 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  IntCtrl.h
+ *         File:  IntCtrl_Lcfg.h
  *       Module:  IntCtrl
  *
- *  Description:  header file for IntCtrl Module    
+ *  Description:  header file for IntCtrl Configuration 
  *  
  *********************************************************************************************************************/
-#ifndef IntCtrl_H
-#define IntCtrl_H
+#ifndef IntCtrl_Lcfg_H
+#define IntCtrl_Lcfg_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "IntCtrl_Types.h"
-#include "IntCtrl_LCfg.h"
-#include "IntCtrl_Cfg.h"
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-
+#define NUM_OF_ACTIVE_INTERRUPT 		3 /*number of programmable exceptions from 1 to 85: 7 system exceptions and faults, 78 peripherals interrupts*/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
@@ -31,32 +29,26 @@
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
-
+typedef struct 
+{
+	IntCtrl_InterruptType	 			IntCtrl_Name;         /*value from IntCtrl_InterruptType enum*/
+	uint8												IntCtrl_GroupPri; 		/*value from 0 to 7 and it depends on NUM_OF_GROUP_PRI*/
+	uint8 											IntCtrl_SubGroupPri; 	/*value from 0 to 7 and it depends on NUM_OF_GROUP_PRI*/
+	
+}IntCtrl_CfgTpe;
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
-
+extern const IntCtrl_CfgTpe IntCtrl_Cfg_UserArray[];
  
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
+
  
-/******************************************************************************
-* \Syntax          : void IntCrtl_Init(void)                                      
-* \Description     : initialize Nvic\SCB Module by parsing the Configuration 
-*                    into Nvic\SCB registers                                    
-*                                                                             
-* \Sync\Async      : Synchronous                                               
-* \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : None                     
-* \Parameters (out): None                                                      
-* \Return value:   : None
-*******************************************************************************/
-void IntCtrl_Init(void);
- 
-#endif  /* IntCrtl_H */
+#endif  /* IntCtrl_Lcfg_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: IntCtrl.h
+ *  END OF FILE: IntCtrl_Lcfg.h
  *********************************************************************************************************************/
