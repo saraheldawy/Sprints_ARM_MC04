@@ -19,7 +19,7 @@
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-#define NUM_OF_ACTIVE_INTERRUPT 		3 /*number of programmable exceptions from 1 to 85: 7 system exceptions and faults, 78 peripherals interrupts*/
+#define NUM_OF_ACTIVE_INTERRUPT 		5 /*number of programmable exceptions from 1 to 85: 7 system exceptions and faults, 78 peripherals interrupts*/
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS

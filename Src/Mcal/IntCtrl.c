@@ -17,7 +17,7 @@
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
 *********************************************************************************************************************/	
-
+#define APINT_VECTKEY 			0x05FA0000
 /**********************************************************************************************************************
  *  LOCAL DATA 
  *********************************************************************************************************************/
@@ -60,6 +60,7 @@ void IntCtrl_Init(void)
 	IntCtrl_InterruptType IntName;
 	uint8 GroupPri;
 	uint8 SubGroupPri;
+	uint32 test;
 	/*Enable/Disable Global Interrupt*/
 	#if(ENABLE_GLOBAL_INTERRUPT == 1)
 		__asm
@@ -74,24 +75,23 @@ void IntCtrl_Init(void)
 	#endif
 	
 	/*Configure Grouping\SubGrouping System in APINT register in SCB*/
-    APINT = 0x05FA0000;
 	switch(numOfGpPri)
 	{
 		case 1:
-			APINT |= (0x7 << 8);
+			APINT = APINT_VECTKEY|(0x7<<8);
 			break;
 		case 2:
-			APINT |= (0x6 << 8);
+			APINT = APINT_VECTKEY|(0x6<<8);
 			break;
 		case 4:
-			APINT |= (0x5 << 8);
+			APINT = APINT_VECTKEY|(0x5<<8);
 			break;
 		case 8:
-			APINT |= (0x0 << 8);
+			APINT = APINT_VECTKEY|(0x0<<8);
 			break;
 		/*if the user entered invalid number then the default will be 8 GP and 0 SubGP*/
 		default:
-			APINT |= (0x0 << 8);
+			APINT = APINT_VECTKEY|(0x0<<8);
 			break;
 	}
 	
