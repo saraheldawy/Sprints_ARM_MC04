@@ -18,9 +18,15 @@
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-#define ENABLE_GLOBAL_INTERRUPT				1		 /*1 for enabling and 0 for disabling*/
-#define NUM_OF_GROUP_PRI					4		/*"You can choose a number from 1, 2, 4, and 8"... 1 --> 1 GP_PRI and 8 SubGP_PRI, 2 --> 2 GP_PRI and 4 SubGP_PRI, 4 --> 4 GP_PRI and 2 SubGP_PRI, 8 --> 8 GP_PRI and 1 SubGP_PRI */
+#define ENABLE_GLOBAL_INTERRUPT				1
 
+/*"You can choose a number from 1, 2, 4, and 8"... 1 --> 1 GP_PRI and 8 SubGP_PRI, 2 --> 2 GP_PRI and 4 SubGP_PRI, 4 --> 4 GP_PRI and 2 SubGP_PRI, 8 --> 8 GP_PRI and 1 SubGP_PRI */
+/*X --> Group and Y --> SubGroup*/
+#define NUM_OF_GROUP_PRI_YYY					1		
+#define NUM_OF_GROUP_PRI_XYY					2		
+#define NUM_OF_GROUP_PRI_XXY					4		
+#define NUM_OF_GROUP_PRI_XXX					8
+#define NUM_OF_GROUP_PRI_SELECTOR			NUM_OF_GROUP_PRI_XXY	
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
  *********************************************************************************************************************/

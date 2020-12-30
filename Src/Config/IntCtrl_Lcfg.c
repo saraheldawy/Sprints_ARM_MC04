@@ -30,7 +30,8 @@
 	{IntCtrl_SVCALL,		1,		1},
 	{IntCtrl_UART0, 		2,		1},
 	{IntCtrl_SYSTICK, 		3,		0},
-	{IntCtrl_MEM_MANAGE,	1,		0}
+	{IntCtrl_I2C3,			1,		1},
+	{IntCtrl_PWM1_G1,		2,		0}
 };
 
 

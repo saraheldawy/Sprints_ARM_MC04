@@ -19,7 +19,7 @@
 *********************************************************************************************************************/	
 #define APINT_VECTKEY 			0x05FA0000
 /**********************************************************************************************************************
- *  LOCAL DATA 
+	*  LOCAL DATA 
  *********************************************************************************************************************/
 
 /**********************************************************************************************************************
@@ -52,15 +52,16 @@
 *******************************************************************************/
 void IntCtrl_Init(void)
 {
-	uint8 numOfGpPri = NUM_OF_GROUP_PRI;
-	uint8 i = 0;
-	uint8 PriValue = 0;
-	volatile uint32 * CurrentPRI = &PRI0; /*initially*/
-	uint8 IRQ_Num = 0;
-	IntCtrl_InterruptType IntName;
-	uint8 GroupPri;
-	uint8 SubGroupPri;
-	uint32 test;
+	uint8 numOfGpPri 							= NUM_OF_GROUP_PRI_SELECTOR;
+	uint8 i 									= 0;
+	uint8 PriValue								= 0;
+	uint8 RegIndex 								= 0;
+	uint8 BitOffset 							= 0;
+	uint8 IRQ_Num 								= 0;
+	IntCtrl_InterruptType IntName 				= 0;
+	uint8 GroupPri 								= 0;
+	uint8 SubGroupPri 							= 0;
+	
 	/*Enable/Disable Global Interrupt*/
 	#if(ENABLE_GLOBAL_INTERRUPT == 1)
 		__asm
@@ -186,192 +187,15 @@ void IntCtrl_Init(void)
 		{
 			IRQ_Num = (uint8)IntName - 16; /*get the interrupt request number "IRQ" */
 			/*Set interrupt Priority*/
-			if((IRQ_Num >= 0) && (IRQ_Num < 4))
-			{
-				CurrentPRI = &PRI0;
-			}
-			else if((IRQ_Num >= 4) && (IRQ_Num < 8))
-			{
-				CurrentPRI = &PRI1;
-			}
-			else if((IRQ_Num >= 8) && (IRQ_Num < 12))
-			{
-				CurrentPRI = &PRI2;
-			}
-			else if((IRQ_Num >= 12) && (IRQ_Num < 16))
-			{
-				CurrentPRI = &PRI3;
-			}
-			else if((IRQ_Num >= 16) && (IRQ_Num < 20))
-			{
-				CurrentPRI = &PRI4;
-			}
-			else if((IRQ_Num >= 20) && (IRQ_Num < 24))
-			{
-				CurrentPRI = &PRI5;
-			}
-			else if((IRQ_Num >= 24) && (IRQ_Num < 28))
-			{
-				CurrentPRI = &PRI6;
-			}
-			else if((IRQ_Num >= 28) && (IRQ_Num < 32))
-			{
-				CurrentPRI = &PRI7;
-			}
-			else if((IRQ_Num >= 32) && (IRQ_Num < 36))
-			{
-				CurrentPRI = &PRI8;
-			}
-			else if((IRQ_Num >= 36) && (IRQ_Num < 40))
-			{
-				CurrentPRI = &PRI9;
-			}
-			else if((IRQ_Num >= 40) && (IRQ_Num < 44))
-			{
-				CurrentPRI = &PRI10;
-			}
-			else if((IRQ_Num >= 44) && (IRQ_Num < 48))
-			{
-				CurrentPRI = &PRI11;
-			}
-			else if((IRQ_Num >= 48) && (IRQ_Num < 52))
-			{
-				CurrentPRI = &PRI12;
-			}
-			else if((IRQ_Num >= 52) && (IRQ_Num < 56))
-			{
-				CurrentPRI = &PRI13;
-			}
-			else if((IRQ_Num >= 56) && (IRQ_Num < 60))
-			{
-				CurrentPRI = &PRI14;
-			}
-			else if((IRQ_Num >= 60) && (IRQ_Num < 64))
-			{
-				CurrentPRI = &PRI15;
-			}
-			else if((IRQ_Num >= 64) && (IRQ_Num < 68))
-			{
-				CurrentPRI = &PRI16;
-			}
-			else if((IRQ_Num >= 68) && (IRQ_Num < 72))
-			{
-				CurrentPRI = &PRI17;
-			}
-			else if((IRQ_Num >= 72) && (IRQ_Num < 76))
-			{
-				CurrentPRI = &PRI18;
-			}
-			else if((IRQ_Num >= 76) && (IRQ_Num < 80))
-			{
-				CurrentPRI = &PRI19;
-			}
-			else if((IRQ_Num >= 80) && (IRQ_Num < 84))
-			{
-				CurrentPRI = &PRI20;
-			}
-			else if((IRQ_Num >= 84) && (IRQ_Num < 88))
-			{
-				CurrentPRI = &PRI21;
-			}
-			else if((IRQ_Num >= 88) && (IRQ_Num < 92))
-			{
-				CurrentPRI = &PRI22;
-			}
-			else if((IRQ_Num >= 92) && (IRQ_Num < 96))
-			{
-				CurrentPRI = &PRI23;
-			}
-			else if((IRQ_Num >= 96) && (IRQ_Num < 100))
-			{
-				CurrentPRI = &PRI24;
-			}
-			else if((IRQ_Num >= 100) && (IRQ_Num < 104))
-			{
-				CurrentPRI = &PRI25;
-			}
-			else if((IRQ_Num >= 104) && (IRQ_Num < 108))
-			{
-				CurrentPRI = &PRI26;
-			}
-			else if((IRQ_Num >= 108) && (IRQ_Num < 112))
-			{
-				CurrentPRI = &PRI27;
-			}
-			else if((IRQ_Num >= 112) && (IRQ_Num < 116))
-			{
-				CurrentPRI = &PRI28;
-			}
-			else if((IRQ_Num >= 116) && (IRQ_Num < 120))
-			{
-				CurrentPRI = &PRI29;
-			}
-			else if((IRQ_Num >= 120) && (IRQ_Num < 124))
-			{
-				CurrentPRI = &PRI30;
-			}
-			else if((IRQ_Num >= 124) && (IRQ_Num < 128))
-			{
-				CurrentPRI = &PRI31;
-			}
-			else if((IRQ_Num >= 128) && (IRQ_Num < 132))
-			{
-				CurrentPRI = &PRI32;
-			}
-			else if((IRQ_Num >= 132) && (IRQ_Num < 136))
-			{
-				CurrentPRI = &PRI33;
-			}
-			else if((IRQ_Num >= 136) && (IRQ_Num < 138))
-			{
-				CurrentPRI = &PRI34;
-			}
-			else
-			{
-				/*INVALID IRQ_Num*/
-			}
-			switch (IRQ_Num % 4)
-			{
-				case 0:
-					*(CurrentPRI) = *(CurrentPRI) | (PriValue);
-					break;
-				case 1:
-					*(CurrentPRI) = *(CurrentPRI) | (PriValue << 8);
-					break;
-				case 2:
-					*(CurrentPRI) = *(CurrentPRI) | (PriValue << 16);
-					break;
-				case 3:
-					*(CurrentPRI) = *(CurrentPRI) | (PriValue << 24);
-					break;
-				default:
-					break;
-			}
-			
+			RegIndex = IRQ_Num / 4;
+			BitOffset = ((IRQ_Num % 4) * 8); /*there is no need to add 5 as I already shifted the value by 5 previously*/
+			PRI(RegIndex) |= PriValue << BitOffset ;
+	
 			/*Enable Interrupts*/
-			if((IRQ_Num >= 0) || (IRQ_Num < 32))
-			{
-				SETBIT(EN0,IRQ_Num);
-			}
-			else if ((IRQ_Num >= 32)||(IRQ_Num < 64))
-			{
-				SETBIT(EN1,IRQ_Num);
-			}
-			else if ((IRQ_Num >= 64)||(IRQ_Num < 96))
-			{
-				SETBIT(EN2,IRQ_Num);
-			}
-			else if ((IRQ_Num >= 96)||(IRQ_Num < 128))
-			{
-				SETBIT(EN3,IRQ_Num);
-			}
-			else
-			{
-				/*INVALID IRQ_Num*/
-			}
+			RegIndex = IRQ_Num / 32;
+			BitOffset = IRQ_Num % 32;
+			SETBIT(EN(RegIndex),BitOffset); 
 		}
-		
-		
 	}
 }
 
