@@ -27,6 +27,9 @@
 #define NUM_OF_GROUP_PRI_XXY					4		
 #define NUM_OF_GROUP_PRI_XXX					8
 #define NUM_OF_GROUP_PRI_SELECTOR			NUM_OF_GROUP_PRI_XXY	
+
+/*number of programmable exceptions from 1 to 85: 7 system exceptions and faults, 78 peripherals interrupts*/
+#define NUM_OF_ACTIVE_INTERRUPT 		6 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
  *********************************************************************************************************************/

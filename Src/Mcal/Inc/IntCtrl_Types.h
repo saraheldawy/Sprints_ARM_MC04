@@ -118,7 +118,14 @@ typedef enum
 	
 }IntCtrl_InterruptType;
 
- 
+ typedef struct 
+{
+	IntCtrl_InterruptType	 			IntCtrl_Name;         /*value from IntCtrl_InterruptType enum*/
+	uint8												IntCtrl_GroupPri; 		/*value from 0 to 7 and it depends on NUM_OF_GROUP_PRI_SELECTOR*/
+	uint8 											IntCtrl_SubGroupPri; 	/*value from 0 to 7 and it depends on NUM_OF_GROUP_PRI_SELECTOR*/
+	
+}IntCtrl_CfgTpe;
+
 #endif  /* INTCTRL_TYPES_H */
 
 /**********************************************************************************************************************
