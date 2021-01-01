@@ -30,7 +30,11 @@
 
 Mcu_ClockSettingsCfgType Mcu_ClockSettingsCfg [NUM_OF_CLOCK_CONFIG_MODES] = 
 {
-	{MOSC,		PLL_ENABLED , 	80},
+	{MOSC,		PLL_ENABLED , 	66},
+	{PIOSC,		PLL_ENABLED , 	120},
+	{MOSC,		PLL_DISABLED , 	80},
+	{PIOSC,		PLL_ENABLED , 	80},
+	{MOSC,		PLL_ENABLED , 	50},
 	{PIOSC, 	PLL_DISABLED,	16}
 };
 

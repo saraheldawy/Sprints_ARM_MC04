@@ -20,7 +20,7 @@
  *********************************************************************************************************************/
 typedef struct
 {
-	uint32	MOCDIS		:1;
+	uint32	MOSCDIS		:1;
 	uint32				:3;
 	uint32	OSCSRC		:2;
 	uint32	XTAL		:5;
@@ -37,6 +37,12 @@ typedef struct
 	uint32				:4;
 	
 }RCC_BF;
+
+typedef union
+{
+	uint32 R;
+	RCC_BF B;
+}RCC_Tag;
 typedef struct
 {
 	uint32				:4;
@@ -54,6 +60,12 @@ typedef struct
 	uint32	USERCC2		:1;
 	
 }RCC2_BF;
+
+typedef union
+{
+	uint32 R;
+	RCC2_BF B;
+}RCC2_Tag;
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -94,10 +106,10 @@ typedef struct
 /*************************************************** MCU Registers ***************************************************/
 #define SYS_CTRL_BASE_ADDRESS							0X400FE000
 #define RCGC_PERPH_BASE_ADDRESS							0x400FE600
-
+#define RIS												*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x050))
 #define RESC											*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x05C))
-#define RCC												*((volatile RCC_BF*)(SYS_CTRL_BASE_ADDRESS+0x060))
-#define RCC2											*((volatile RCC2_BF*)(SYS_CTRL_BASE_ADDRESS+0x070))
+#define RCC												((volatile RCC_Tag*)(SYS_CTRL_BASE_ADDRESS+0x060))
+#define RCC2											((volatile RCC2_Tag*)(SYS_CTRL_BASE_ADDRESS+0x070))
 #define PLLFREQ0										*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x160))
 #define PLLFREQ1										*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x164))
 #define PLLSTAT											*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x168))

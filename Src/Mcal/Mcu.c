@@ -18,7 +18,8 @@
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
 *********************************************************************************************************************/
-
+#define CLOCK_SOURCE_FREQ       	16
+#define PLL_FREQ									400
 /**********************************************************************************************************************
  *  LOCAL DATA 
  *********************************************************************************************************************/
@@ -119,7 +120,7 @@ Mcu_RawResetType Mcu_GetResetRawValue(void)
 *******************************************************************************/
 void Mcu_PerformReset(void)
 {
-	/*set SYSRESREQ in APINT*/
+	/*Set SYSRESREQ in APINT*/
 	APINT = (APINT_VECTKEY)|(0x1<<2);
 	
 }
@@ -135,8 +136,82 @@ void Mcu_PerformReset(void)
 *                                    E_NOT_OK                                  
 *******************************************************************************/
 Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
-{
-	return E_OK;
+{	
+	Std_ReturnType retVal = E_OK;
+	uint8 ClockSource =  LocalConfigPtr->Mcu_ClockSettingsCfg_Ptr[ClockSetting].Mcu_ClockSource;
+	uint8 PLLState = LocalConfigPtr->Mcu_ClockSettingsCfg_Ptr[ClockSetting].Mcu_PllState;
+	uint8 FreqVal = LocalConfigPtr->Mcu_ClockSettingsCfg_Ptr[ClockSetting].Mcu_Freq;
+	uint8 DivVal = 1;
+	/*Check for valid ClockSetting Mode*/
+	if(ClockSetting < NUM_OF_CLOCK_CONFIG_MODES)
+	{
+		/*Overwrite on RCC using RCC2*/
+		RCC2->B.USERCC2 = 0x1;
+		
+		/*Get Clock Source PIOSC or MOSC*/
+		RCC->B.OSCSRC = ClockSource;
+		RCC2->B.OSCSRC2 = ClockSource;
+		//RCC->MOSCDIS = ~(ClockSource);  /*MOSC --> 0(Enable MOSC)  PIOSC --> 1(Disable PIOSC)*/
+		
+		/*PLL use*/
+		switch(PLLState)
+		{
+			case PLL_ENABLED:
+				/*1. Disable PLL*/
+				RCC->B.BYPASS = 0x1;
+				RCC2->B.BYPASS2 = 0x1;
+				RCC->B.PWRDN = 0x1;
+				RCC2->B.PWRDN2 = 0x1;
+				RCC->B.USESYSDIV = 0x0;
+				/*2. Set XTAL and Power PLL*/
+				RCC->B.PWRDN = 0x0;
+				RCC2->B.PWRDN2 = 0x0;
+				/*3. Set System Freq*/
+				if(FreqVal <= 80)
+				{
+					RCC2->B.DIV400 =0x1; /*to extended the division field*/
+					DivVal = PLL_FREQ / FreqVal;
+					RCC2->R &= (0x80<< 22); /*Cler SYS DIV bits   ~(3F)*/
+					RCC2->R |= ((DivVal-1) << 22 );
+					RCC->B.USESYSDIV = 0x1;
+				}
+				else
+				{
+					/*INVALID INPUT FREQ*/
+					FreqVal = 80;
+					RCC2->R |= (4 << 22); /*((400/5) - 1)*/
+					RCC->B.USESYSDIV = 0x1;
+					retVal = E_NOT_OK;
+				}
+				/*4. Enable PLL*/
+				while(GETBIT(RIS,6) == 0); /*wait for PLL to reach Lock State*/
+				RCC->B.BYPASS = 0x0;
+				RCC2->B.BYPASS2 = 0x0;
+				break;
+			case PLL_DISABLED:
+				/*1. Disable PLL*/
+				RCC->B.BYPASS = 0x1;
+				RCC2->B.BYPASS2 = 0x1;
+				RCC->B.PWRDN = 0x1;
+				RCC2->B.PWRDN2 = 0x1;
+				/*2. Set System Freq*/
+				DivVal = CLOCK_SOURCE_FREQ / FreqVal;
+				RCC->B.SYSDIV = DivVal - 1; /*for Freq Less than 16 it will be automatically set to 0 -- > the same clock source*/
+				RCC2->B.SYSDIV2 = DivVal - 1; /*for Freq Less than 16 it will be automatically set to 0 -- > the same clock source*/
+				RCC->B.USESYSDIV = 0x1;
+				break;
+			default:
+				/*INVALID PLL STATE*/
+				retVal = E_NOT_OK;
+				break;
+		}
+	}
+	else
+	{
+		/*INVALID Clock Setting Mode*/
+		retVal = E_NOT_OK;
+	}
+	return retVal;
 }
 /******************************************************************************
 * \Syntax          : Std_ReturnType Mcu_DistributePllClock(void)       
