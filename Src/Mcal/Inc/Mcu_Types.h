@@ -46,7 +46,7 @@
  *********************************************************************************************************************/
 typedef uint8 Mcu_PllStatusType;   /*LOCKED or UNLOCKED*/
 typedef uint8 Mcu_RawResetType;
-typedef uint8 Mcu_ClockType;       /*Index of Mcu_ClockSettingsCfgType array*/
+typedef uint8 Mcu_ClockType;       /*Index of Mcu_ClockSettingsCfgType array of structure*/
 
 
 /*Configuration Data types*/

@@ -19,7 +19,7 @@
  *********************************************************************************************************************/
 #define NUM_OF_ACTIVATED_PRIPHERALS				4
 #define NUM_OF_CLOCK_CONFIG_MODES				6
-#define ACTIVE_CLOCK_CONFIG_MODE				0 	/*Choose from NUM_OF_CLOCK_CONFIG_MODES you entered*/
+#define ACTIVE_CLOCK_CONFIG_MODE				4	/*Choose from NUM_OF_CLOCK_CONFIG_MODES you entered*/
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
  *********************************************************************************************************************/

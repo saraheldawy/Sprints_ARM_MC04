@@ -18,7 +18,7 @@
 /**********************************************************************************************************************
 *  LOCAL MACROS CONSTANT\FUNCTION
 *********************************************************************************************************************/
-#define CLOCK_SOURCE_FREQ       	16
+#define CLOCK_SOURCE_FREQ       					16
 #define PLL_FREQ									400
 /**********************************************************************************************************************
  *  LOCAL DATA 
@@ -147,12 +147,9 @@ Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
 	{
 		/*Overwrite on RCC using RCC2*/
 		RCC2->B.USERCC2 = 0x1;
-		
 		/*Get Clock Source PIOSC or MOSC*/
 		RCC->B.OSCSRC = ClockSource;
 		RCC2->B.OSCSRC2 = ClockSource;
-		//RCC->MOSCDIS = ~(ClockSource);  /*MOSC --> 0(Enable MOSC)  PIOSC --> 1(Disable PIOSC)*/
-		
 		/*PLL use*/
 		switch(PLLState)
 		{
@@ -169,9 +166,10 @@ Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
 				/*3. Set System Freq*/
 				if(FreqVal <= 80)
 				{
-					RCC2->B.DIV400 =0x1; /*to extended the division field*/
-					DivVal = PLL_FREQ / FreqVal;
-					RCC2->R &= (0x80<< 22); /*Cler SYS DIV bits   ~(3F)*/
+					RCC2->B.DIV400 =0x1; 				/*to extended the division field*/
+					DivVal = PLL_FREQ / FreqVal;			
+					RCC2->B.SYSDIV2LSB = 0x0;			/*Clear 7-bit SysDiv*/
+					RCC2->B.SYSDIV2 = 0x0;
 					RCC2->R |= ((DivVal-1) << 22 );
 					RCC->B.USESYSDIV = 0x1;
 				}
@@ -179,7 +177,10 @@ Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
 				{
 					/*INVALID INPUT FREQ*/
 					FreqVal = 80;
-					RCC2->R |= (4 << 22); /*((400/5) - 1)*/
+					RCC2->B.DIV400 =0x1;					/*to extended the division field*/
+					RCC2->B.SYSDIV2LSB = 0x0;				/*Clear 7-bit SysDiv*/
+					RCC2->B.SYSDIV2 = 0x0;
+					RCC2->R |= (4 << 22); 					/*((400/5) - 1)*/
 					RCC->B.USESYSDIV = 0x1;
 					retVal = E_NOT_OK;
 				}
@@ -196,8 +197,9 @@ Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
 				RCC2->B.PWRDN2 = 0x1;
 				/*2. Set System Freq*/
 				DivVal = CLOCK_SOURCE_FREQ / FreqVal;
-				RCC->B.SYSDIV = DivVal - 1; /*for Freq Less than 16 it will be automatically set to 0 -- > the same clock source*/
-				RCC2->B.SYSDIV2 = DivVal - 1; /*for Freq Less than 16 it will be automatically set to 0 -- > the same clock source*/
+				DivVal = (DivVal == 0) ? DivVal : DivVal-1;/*for Freq Less than 16 it will be automatically set to 0 -- > the same clock source*/
+				RCC->B.SYSDIV = DivVal; 
+				RCC2->B.SYSDIV2 = DivVal; 
 				RCC->B.USESYSDIV = 0x1;
 				break;
 			default:

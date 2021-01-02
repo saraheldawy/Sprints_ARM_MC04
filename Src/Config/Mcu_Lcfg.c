@@ -43,7 +43,7 @@ Mcu_ClockGatesCfgType Mcu_ClockGates[NUM_OF_ACTIVATED_PRIPHERALS] =
 	Mcu_GPIO_A, 
 	Mcu_TIMER5,
 	Mcu_UART4,
-	Mcu_WTIMER2
+	Mcu_HIB
 };
 
 
