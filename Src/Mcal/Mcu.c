@@ -215,6 +215,37 @@ Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
 	}
 	return retVal;
 }
+
+// Another Implmentation
+Std_ReturnType Mcu_InitClock_Old(Mcu_ClockType ClockSetting)
+{
+	uint8 DivisionVal;
+	uint8 OscSrc = LocalConfigPtr->Mcu_ClockSettingsCfgType[ClockSetting].Mcu_ClockSource;
+	uint8 Freq = LocalConfigPtr->Mcu_ClockSettingsCfgType[ClockSetting].Mcu_Freq;
+	Mcu_PllStatusType PllState = LocalConfigPtr->Mcu_ClockSettingsCfgType[ClockSetting].Mcu_PllState;
+	if (PllState)
+	{
+		SETBIT(RCC, 11); // BYPASS
+		CLRBIT(RCC, 22); // USESYSDIV
+		RCC = RCC | (OscSrc << 4);
+		RCC = RCC | (0x15 << 6); // use 16 Mhz crystal
+		CLRBIT(RCC, 13); //PWRDN
+		DivisionVal = (400 / Freq) - 1;
+		RCC = RCC | (DivisionVal << 23); //SYSDIV
+		SETBIT(RCC, 22); //USESYSDIV
+	}
+	else
+	{
+		SETBIT(RCC, 11); // BYPASS
+		CLRBIT(RCC, 22); // USESYSDIV
+		RCC = RCC | (OscSrc << 4);
+		RCC = RCC | (0x15 << 6); // use 16 Mhz crystal
+		DivisionVal = (16 / Freq) - 1;
+		RCC = RCC | (DivisionVal << 23); //SYSDIV
+		SETBIT(RCC, 22); //USESYSDIV;
+	}
+	return E_OK;
+}
 /******************************************************************************
 * \Syntax          : Std_ReturnType Mcu_DistributePllClock(void)       
 * \Description     : Set Corresponding Pripheral Clock                                    
@@ -238,6 +269,7 @@ Std_ReturnType Mcu_DistributePllClock(void)
 		BitOffset = (LocalConfigPtr->Mcu_ClockGates_Ptr[i]) % 8;
 		SETBIT(RCGC_PRIPH(RegIndex),BitOffset);
 	}
+	CLRBIT(RCC, 11); // BYPASS
 	return E_OK;
 }
 /******************************************************************************

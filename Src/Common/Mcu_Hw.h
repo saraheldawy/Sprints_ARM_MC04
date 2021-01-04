@@ -43,6 +43,8 @@ typedef union
 	uint32 R;
 	RCC_BF B;
 }RCC_Tag;
+
+
 typedef struct
 {
 	uint32				:4;
@@ -66,6 +68,27 @@ typedef union
 	uint32 R;
 	RCC2_BF B;
 }RCC2_Tag;
+
+
+typedef struct
+{
+	uint32	DATA_0		:1;
+	uint32	DATA_1		:1;
+	uint32	DATA_2		:1;
+	uint32	DATA_3		:1;
+	uint32	DATA_4		:1;
+	uint32	DATA_5		:1;
+	uint32	DATA_6		:1;
+	uint32	DATA_7		:1;
+	uint32				:24;
+	
+}GPIODATA_BF;
+
+typedef union
+{
+	uint32 R;
+	GPIODATA_BF B;
+}GPIODATA_Tag;
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -118,7 +141,7 @@ typedef union
 /*************************************************** GPIO Registers ***************************************************/
 #define GPIOs_APB_BASE_ADDRESS							0X40004000
 
-#define GPIO_PORT(n)									*((volatile uint32*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
+#define GPIO_PORT(n)									*((volatile GPIODATA_Tag*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
 #define GPIO_CHANNEL(n, m)								*((volatile uint32*)(GPIO_PORT(n)+(4<<m)))
 
 /**********************************************************************************************************************
