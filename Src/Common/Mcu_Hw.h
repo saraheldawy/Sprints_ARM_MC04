@@ -114,6 +114,13 @@ typedef union
 #define PLLFREQ1										*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x164))
 #define PLLSTAT											*((volatile uint32*)(SYS_CTRL_BASE_ADDRESS+0x168))
 #define RCGC_PRIPH(n)									*((volatile uint32*)(RCGC_PERPH_BASE_ADDRESS+0x4*(n)))
+
+/*************************************************** GPIO Registers ***************************************************/
+#define GPIOs_APB_BASE_ADDRESS							0X40004000
+
+#define GPIO_PORT(n)									*((volatile uint32*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
+#define GPIO_CHANNEL(n, m)								*((volatile uint32*)(GPIO_PORT(n)+(4<<m)))
+
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
