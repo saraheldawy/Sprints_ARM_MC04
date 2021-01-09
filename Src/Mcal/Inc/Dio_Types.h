@@ -78,17 +78,12 @@ typedef enum
     GPIO_E_CHANNEL_3,
     GPIO_E_CHANNEL_4,
     GPIO_E_CHANNEL_5,
-    GPIO_E_CHANNEL_6,
-    GPIO_E_CHANNEL_7,
 
-    GPIO_F_CHANNEL_0,
+    GPIO_F_CHANNEL_0 = 40,
     GPIO_F_CHANNEL_1,
     GPIO_F_CHANNEL_2,
     GPIO_F_CHANNEL_3,
-    GPIO_F_CHANNEL_4,
-    GPIO_F_CHANNEL_5,
-    GPIO_F_CHANNEL_6,
-    GPIO_F_CHANNEL_7,                    
+    GPIO_F_CHANNEL_4,                  
 }Dio_ChannelType;
 
 typedef enum

@@ -66,7 +66,22 @@ typedef struct
 typedef union
 {
 	uint32 R;
-	RCC2_BF B;
+	struct
+	{
+		uint32				:4;
+		uint32	OSCSRC2		:3;
+		uint32				:4;
+		uint32	BYPASS2		:1;
+		uint32				:1;
+		uint32	PWRDN2		:1;
+		uint32	USBPWRDN	:1;
+		uint32				:7;
+		uint32	SYSDIV2LSB	:1;
+		uint32	SYSDIV2		:6;
+		uint32				:1;
+		uint32	DIV400		:1;
+		uint32	USERCC2		:1;
+	}B;
 }RCC2_Tag;
 
 
@@ -141,8 +156,8 @@ typedef union
 /*************************************************** GPIO Registers ***************************************************/
 #define GPIOs_APB_BASE_ADDRESS							0X40004000
 
-#define GPIO_PORT(n)									*((volatile GPIODATA_Tag*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
-#define GPIO_CHANNEL(n, m)								*((volatile uint32*)(GPIO_PORT(n)+(4<<m)))
+#define GPIO_PORT(n)									((volatile GPIODATA_Tag*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
+#define GPIO_DATA_CHANNEL(n, m)							*((volatile uint32*)(GPIO_PORT(n)+(4<<m)))
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES

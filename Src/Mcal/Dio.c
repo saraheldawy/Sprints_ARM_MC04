@@ -88,7 +88,7 @@ void Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level)
 *******************************************************************************/
 Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
 {
-    return GPIO_PORT(PortId)->R;
+    return GPIO_DATA_PORT(PortId)->R;
 }
 
 /******************************************************************************
@@ -104,7 +104,7 @@ Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
 *******************************************************************************/
 void Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level)
 {
-    GPIO_PORT(PortId)->R = Level;
+    GPIO_DATA_PORT(PortId)->R = Level;
 }
 
 /******************************************************************************
@@ -123,7 +123,7 @@ Dio_LevelType Dio_FlipChannel(Dio_ChannelType ChannelId)
     uint8 PortType = ChannelId / 8;
     uint8 ChannelNum = ChannelId % 8;
     Dio_LevelType Level = GPIO_CHANNEL(ChannelNum, PortType);
-    return Level ^= Level;
+    return GPIO_CHANNEL(ChannelNum, PortType) ^= Level;
 }
 
 
