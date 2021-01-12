@@ -104,6 +104,41 @@ typedef union
 	uint32 R;
 	GPIODATA_BF B;
 }GPIODATA_Tag;
+
+typedef enum{
+	RCGCWD, 
+	RCGCTIMER, 
+	RCGCGPIO, 
+	RCGCDMA, 
+	RCGCHIB = 5, 
+	RCGCUART, 
+	RCGCSSI, 
+	RCGCI2C, 
+	RCGCUSB = 10, 
+	RCGCCAN = 14, 
+	RCGCADC, 
+	RCGCACMP, 
+	RCGCPWM, 
+	RCGCQEI, 
+	RCGCEEPROM = 22, 
+	RCGCEEWTIMER, 
+}RCGC_PRIPH;
+
+typedef struct
+{
+	uint32	INTEN		:1;
+	uint32	RESEN		:1;
+	uint32	INTTYPE		:1;
+	uint32				:28;
+	uint32	WRC			:1;
+	
+}WDTCTL_BF;
+
+typedef union
+{
+	uint32 R;
+	WDTCTL_BF B;
+}WDTCTL_Tag;
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -158,6 +193,11 @@ typedef union
 
 #define GPIO_PORT(n)									((volatile GPIODATA_Tag*)(GPIOs_APB_BASE_ADDRESS+(0x1000*(n%4))+(0x20000*(n/4))))
 #define GPIO_DATA_CHANNEL(n, m)							*((volatile uint32*)(GPIO_PORT(n)+(4<<m)))
+
+/*************************************************** WDG Registers ***************************************************/
+#define WDT1_APB_BASE_ADDRESS							0X40004000
+#define WDT1CTL											*((volatile uint32*)(WDT1_APB_BASE_ADDRESS+0x008))
+#define WDT1LOAD										*((volatile uint32*)(WDT1_APB_BASE_ADDRESS))
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES

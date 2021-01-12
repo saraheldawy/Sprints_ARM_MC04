@@ -1,23 +1,22 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
- *       Module:  -
+ *         File:  Wdt.c
+ *       Module:  Wdt
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  header file for Wdt Module    
  *  
  *********************************************************************************************************************/
-#ifndef MCU_H
-#define MCU_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
-#include "Std_Types.h"
-#include "Mcu_Types.h"
-#include "Mcu_Lcfg.h"
-#include "Mcu_Cfg.h"
-
+#include "Mcu_Hw.h"
+#include "Wdg.h"
+/**********************************************************************************************************************
+ *  LOCAL DATA 
+ *********************************************************************************************************************/
+static const Wdg_ConfigType* LocalConfigPtr = NULL_PTR ;
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -41,15 +40,50 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void Mcu_Init ( const Mcu_ConfigType* ConfigPtr);
-Mcu_RawResetType Mcu_GetResetRawValue(void);
-void Mcu_PerformReset(void);
-Std_ReturnType Mcu_InitClock (Mcu_ClockType ClockSetting);
-Std_ReturnType Mcu_DistributePllClock(void);
-Mcu_PllStatusType Mcu_GetPllStatus(void);
- 
-#endif  /*MCU_H*/
+ void Wdg_Init(const Wdg_ConfigType* ConfigPtr)
+{
+	/*set the Local Configuration Pointer*/
+	LocalConfigPtr = ConfigPtr;  
+    SETBIT(RCGC_PRIPH(RCGCWD, 1))
+    Wdg_SetTriggerCondition(WDT1_MAX_TIMEOUT)
+    // WRC bit polling
+    while (WDT1CTL->B.WRC == 0); 
+    // Reset enable   
+    WDT1CTL->B.RESEN = 1;  
+    // WRC bit polling 
+    while (WDT1CTL->B.WRC == 0); 
+    // Inttrupt type 
+    WDT1CTL->B.INTTYPE = WDT1_INT_TYPE;
+    // WRC bit polling
+    while (WDT1CTL->B.WRC == 0); 
+    // Inttrupt enable
+    WDT1CTL->B.INTEN = 1;
+}
+/******************************************************************************
+* \Syntax          : void Wdt_ReadChannel(Wdt_ChannelType ChannelId)                                      
+* \Description     : 
+*                                                        
+*                                                                             
+* \Sync\Async      : Synchronous                                               
+* \Reentrancy      : Reentrant                                             
+* \Parameters (in) : Wdt_ChannelType ChannelId                    
+* \Parameters (out): Wdt_LevelType                                                      
+* \Return value:   : Wdt_LevelType
+*******************************************************************************/
+
+void Wdg_SetTriggerCondition(uint16 timeout)
+{
+    uint8 WdgFreq = 16;
+    // from time in ms to tick values
+    uint32 TickValue = timeout * WdgFreq * 1000;
+    if (timeout >= WDT1_INITIAL_TIMEOUT &&  timeout <= WDT1_MAX_TIMEOUT)
+    {
+        while (WDT1CTL->B.WRC == 0);
+        WDT1LOAD = TickValue;
+    }
+}
+
 
 /**********************************************************************************************************************
- *  END OF FILE: Std_Types.h
+ *  END OF FILE: Wdt.c
  *********************************************************************************************************************/

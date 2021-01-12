@@ -1,23 +1,22 @@
 /**********************************************************************************************************************
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
- *       Module:  -
+ *         File:  Wdt.h
+ *       Module:  Wdt
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  header file for Wdt Module    
  *  
  *********************************************************************************************************************/
-#ifndef MCU_H
-#define MCU_H
+#ifndef WDG_H
+#define WDG_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
 #include "Std_Types.h"
-#include "Mcu_Types.h"
-#include "Mcu_Lcfg.h"
-#include "Mcu_Cfg.h"
-
+#include "Wdg_Types.h"
+#include "Wdg_Lcfg.h"
+#include "Wdg_Cfg.h"
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
@@ -41,15 +40,22 @@
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-void Mcu_Init ( const Mcu_ConfigType* ConfigPtr);
-Mcu_RawResetType Mcu_GetResetRawValue(void);
-void Mcu_PerformReset(void);
-Std_ReturnType Mcu_InitClock (Mcu_ClockType ClockSetting);
-Std_ReturnType Mcu_DistributePllClock(void);
-Mcu_PllStatusType Mcu_GetPllStatus(void);
  
-#endif  /*MCU_H*/
+/******************************************************************************
+* \Syntax          : void Wdt_Init(void)                                      
+* \Description     : initialize Nvic\SCB Module by parsing the Configuration 
+*                    into Nvic\SCB registers                                    
+*                                                                             
+* \Sync\Async      : Synchronous                                               
+* \Reentrancy      : Non Reentrant                                             
+* \Parameters (in) : None                     
+* \Parameters (out): None                                                      
+* \Return value:   : None
+*******************************************************************************/
+void Wdg_SetTriggerCondition(uint16 timeout)
+void Wdg_Init(const Mcu_ConfigType* ConfigPtr)
+#endif  /* Wdt_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: Std_Types.h
+ *  END OF FILE: Wdt.h
  *********************************************************************************************************************/
